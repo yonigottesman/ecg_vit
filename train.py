@@ -34,12 +34,7 @@ def train(database):
         )
     ]
 
-    vit.fit(
-        train_ds,
-        validation_data=val_ds,
-        epochs=epochs,
-        callbacks=cbs,
-    )
+    vit.fit(train_ds, validation_data=val_ds, epochs=epochs, callbacks=cbs)
 
 
 if __name__ == "__main__":

@@ -2,16 +2,6 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 
 
-class PatchEmbeddings(tf.keras.layers.Layer):
-    def __init__(self, patch_size, hidden_size, **kwargs):
-        super().__init__(**kwargs)
-        self.projection = tf.keras.layers.Conv1D(filters=hidden_size, kernel_size=patch_size, strides=patch_size)
-
-    def call(self, inputs: tf.Tensor, training: bool = False) -> tf.Tensor:
-        embeddings = self.projection(inputs)
-        return embeddings
-
-
 class ViTEmbeddings(tf.keras.layers.Layer):
     def __init__(self, patch_size, hidden_size, dropout=0.0, **kwargs):
         super().__init__(**kwargs)
@@ -23,17 +13,11 @@ class ViTEmbeddings(tf.keras.layers.Layer):
         self.dropout = tf.keras.layers.Dropout(rate=dropout)
 
     def build(self, input_shape):
-        self.cls_token = self.add_weight(
-            shape=(1, 1, self.hidden_size),
-            trainable=True,
-            name="cls_token",
-        )
+        self.cls_token = self.add_weight(shape=(1, 1, self.hidden_size), trainable=True, name="cls_token")
 
         num_patches = input_shape[1] // self.patch_size
         self.position_embeddings = self.add_weight(
-            shape=(1, num_patches + 1, self.hidden_size),
-            trainable=True,
-            name="position_embeddings",
+            shape=(1, num_patches + 1, self.hidden_size), trainable=True, name="position_embeddings"
         )
 
     def call(self, inputs: tf.Tensor, training: bool = False) -> tf.Tensor:

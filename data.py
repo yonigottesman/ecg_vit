@@ -29,7 +29,7 @@ def ds_base(df, shuffle, bs):
     return ds
 
 
-def gen_datasets(df: pd.DataFrame, bs):
+def gen_datasets(df: pd.DataFrame, bs: int):
     train_ds = ds_base(df[~df["test"]], True, bs)
     val_ds = ds_base(df[df["test"]], False, bs)
     return train_ds, val_ds
