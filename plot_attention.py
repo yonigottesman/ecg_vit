@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 import wfdb
 
-from plot import plot_ax
+from plot import lead_index, plot_ax
 from vit import VisionTransformer
 
 
@@ -20,12 +20,13 @@ def main(file_path: str, wights_path: str, lead: int):
     attn = attn[0, :, 0, 1:]  # cls_token attention with rest
     attn = tf.transpose(attn, (1, 0))
     attn = tf.expand_dims(tf.expand_dims(attn, 0), 0)
-    attn = tf.image.resize(attn, (1, 5000))
-    
+    attn = tf.image.resize(attn, (1, 5000))[0, 0]
+
     for head in range(6):
         fig, ax = plt.subplots(figsize=(10, 1.5))
         plot_ax(ax, signal=record.p_signal[:, lead], plot_grid=False, sampling_rate=record.fs)
-        ax.pcolorfast(ax.get_xlim(), ax.get_ylim(), attn[0, 0, :, head][np.newaxis], cmap="hot", alpha=0.5)
+        ax.pcolorfast(ax.get_xlim(), ax.get_ylim(), attn[:, head][np.newaxis], cmap="Reds", alpha=0.6)
+        ax.set_ylabel(lead_index[lead], fontsize=13)
         fig.savefig(f"attn_{head}")
 
 
