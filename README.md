@@ -1,6 +1,6 @@
 # ecg_vit  
-1D vision transformer (vit) for ecg interpretable classification
-
+1D vision transformer (vit) for ecg interpretable classification  
+Code for my [blog post](https://yonigottesman.github.io/ecg/vit/deep-learning/2023/01/20/ecg-vit.html)
 
 ## Installation
 python version `3.10.5`  
